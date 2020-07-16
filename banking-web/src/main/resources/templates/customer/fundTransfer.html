@@ -27,8 +27,8 @@
          function validateFunds() {
         	   var amountObj=document.getElementById("amount");
         	   var formattedMoney=amountObj.value;
-        	   if(formattedMoney.length<1){
-        		     document.getElementById("amountError").innerHTML="Please Enter the Amount.";
+        	   if(formattedMoney<=0 || formattedMoney==null ){
+        		     document.getElementById("amountError").innerHTML="Amount should be more than 0.";
         		     amountObj.focus();
         		     return;
         	   }
