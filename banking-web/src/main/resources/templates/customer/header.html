@@ -2,42 +2,67 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Header Page</title>
+  <title>Cubic Bank</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  
 </head>
 <body>
 <div th:fragment="header">
- <a href="/customer/account/addPayee">	<button type="button" class="btn btn-primary">Add Payee</button></a>
-  <a href="/customer/account/fundtransfer/">	<button type="button" class="btn btn-primary">Fund Transfer</button></a>
-  <a href="/customer/account/myAccount/">	<button type="button" class="btn btn-primary">Edit Profile</button></a>
-          <a href="/customer/account/myAccount/customerAccountHome">	<button type="button" class="btn btn-primary">Go to Profile Home</button></a>
-           <a href="/customer/login/">	<button type="button" class="btn btn-primary">Logout</button></a>
-
-<!-- <nav class="navbar navbar-expand-sm bg-primary navbar-dark" style ="height: 50px; ">
- 
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
+<a class="navbar-brand" th:href="@{/customer/dashboard}">Dashboard</a>
+  <!-- Links -->
   <ul class="navbar-nav">
-   <li class="nav-item active">
-      <a class="nav-link" th:href="@{/customer/login1}">Home</a>
-    </li>
-     <li class="nav-item active">
-      <a class="nav-link" th:href="@{/customer/showProfile}">Profile</a>
-    </li>
-     <li class="nav-item active">
-      <a class="nav-link " href=#>Add Payee</a>
-    </li>
+  
     
-          <li class="nav-item active">
-      <a class="nav-link " th:href="login">Logout</a>
+     <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+       Account 
+      </a>
+      <div class="dropdown-menu">
+      <a class="nav-link" href="/customer/account/myAccount/customerAccountHome" style="color:black; text-align:center;">Account Profile</a>
+    <a class="dropdown-item" href="/customer/account/myAccount" style="color:black;">Edit Account</a>
+      </div>
+    </li>
+ 	
+ 	<!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+        Payee 
+      </a>
+      <div class="dropdown-menu">
+          <a class="dropdown-item" href="/customer/account/addPayee">Payee Table</a>
+           <a class="dropdown-item" th:href="@{/customer/addPayee}">Add Payee</a>
+
+      </div>
+    </li>
+
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle"  id="navbardrop" data-toggle="dropdown">
+        Transfer 
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/customer/account/fundtransfer/">Fund Transfer</a>
+        <a class="dropdown-item" href="/customer/account/transactionList">Transaction Table</a>
+      </div>
     </li>
     
   </ul>
-</nav> -->
+  
+  
+   <ul class="nav navbar-nav navbar-right">
+     <li class="nav-item"> <a href="/customer/login/"> Logout</a> </li>
+    </ul>
+ 
+</nav>
+</br>
+
+
 </div>
 
 </body>

@@ -35,6 +35,7 @@ import com.rab3tech.vo.EmailVO;
 import com.rab3tech.vo.LoginVO;
 import com.rab3tech.vo.PayeeInfoVO;
 import com.rab3tech.vo.SecurityQuestionsVO;
+import com.rab3tech.vo.StatementVO;
 import com.rab3tech.vo.TransactionVO;
 
 @Controller
@@ -63,6 +64,20 @@ public class CustomerUIController {
 	@Autowired
 	private TransactionService transactionService;
 
+	@GetMapping("/customer/account/transactionList")
+	public String getTransaction(HttpSession session, Model model) {
+		logger.debug("addPayee");
+		LoginVO loginVO2 = (LoginVO) session.getAttribute("userSessionVO");
+		if (loginVO2 == null) {
+			model.addAttribute("error", "please Login first");
+			return "customer/login";
+		} else {
+				List<StatementVO> stats = transactionService.getAlltransaction(loginVO2.getUsername());
+				model.addAttribute("list", stats);
+				return "customer/transactionTable";
+		}
+	}
+	
 	@PostMapping("/customer/account/fundtransfer")
 	public String verifyTransfer(@ModelAttribute TransactionVO transcationVo, HttpSession session, Model model){
 		logger.debug("verifyTransfer");
