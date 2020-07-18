@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import com.rab3tech.dao.entity.Login;
 import com.rab3tech.dao.entity.PayeeInfo;
 import com.rab3tech.dao.entity.TransactionEntity;
 import com.rab3tech.vo.LoginVO;
+import com.rab3tech.vo.PayeeInfoVO;
 import com.rab3tech.vo.StatementVO;
 import com.rab3tech.vo.TransactionVO;
 
@@ -87,31 +89,53 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public List<StatementVO> getAlltransaction(String username) {
+	public List<TransactionVO> getAlltransaction(String username) {
 
 		Customer customer = customerRepository.findByEmail(username).get();
 		Optional<CustomerAccountInfo> cusAcc = customerAccountInfoRepository.findByCustomerId(customer.getLogin());
-		List<TransactionEntity> transactionEntityList = transactionRepository.findAllByDebitAccountNumber(cusAcc.get().getAccountNumber());
-		Optional<PayeeInfo> payee = payeeInfoRepository.findByPayeeAccountNo(cusAcc.get().getAccountNumber());
-		List<StatementVO> listStatement = new ArrayList<StatementVO>();
-		if (payee.isPresent()) {
-			List<TransactionEntity> secondTransactionList = transactionRepository.findAllByPayeeId(payee.get());
-			transactionEntityList.addAll(secondTransactionList);
-			//Collections.reverse(transactionEntityList);
-		}
+		List<TransactionEntity> transactionEntityList = transactionRepository
+				.getAllTransactions(cusAcc.get().getAccountNumber());
+		List<TransactionVO> listStatement = new ArrayList<TransactionVO>();
 		for (TransactionEntity each : transactionEntityList) {
-			StatementVO vo = new StatementVO();
-			vo.setAmount(each.getAmount());
+			TransactionVO vo = new TransactionVO();
+			vo.setTransferAmount(each.getAmount());
 			vo.setDoe(each.getDOE());
-			vo.setPayeeName(each.getPayeeId().getPayeeName());
+			vo.setDescription(each.getDescription());
 			if (each.getDebitAccountNumber().equals(cusAcc.get().getAccountNumber())) {
 				vo.setType("Debit");
 			} else {
 				vo.setType("Credit");
 			}
-			vo.setRemarks(each.getDescription());
+			PayeeInfoVO payeevo = new PayeeInfoVO();
+			BeanUtils.copyProperties(each.getPayeeId(), payeevo);
+			vo.setPayeeName(payeevo.getPayeeName());
 			listStatement.add(vo);
 		}
 		return listStatement;
 	}
+
+	/*
+	 * @Override public List<StatementVO> getAlltransaction(String username) {
+	 * 
+	 * Customer customer = customerRepository.findByEmail(username).get();
+	 * Optional<CustomerAccountInfo> cusAcc
+	 * =customerAccountInfoRepository.findByCustomerId(customer.getLogin());
+	 * List<TransactionEntity> transactionEntityList
+	 * =transactionRepository.findAllByDebitAccountNumber(cusAcc.get().
+	 * getAccountNumber()); Optional<PayeeInfo> payee
+	 * =payeeInfoRepository.findByPayeeAccountNo(cusAcc.get().getAccountNumber());
+	 * List<StatementVO> listStatement = new ArrayList<StatementVO>();
+	 * if(payee.isPresent()) { List<TransactionEntity> secondTransactionList =
+	 * transactionRepository.findAllByPayeeId(payee.get());
+	 * transactionEntityList.addAll(secondTransactionList);
+	 * //Collections.reverse(transactionEntityList); } for (TransactionEntity each :
+	 * transactionEntityList) { StatementVO vo = new StatementVO();
+	 * vo.setAmount(each.getAmount()); vo.setDoe(each.getDOE());
+	 * vo.setPayeeName(each.getPayeeId().getPayeeName()); if
+	 * (each.getDebitAccountNumber().equals(cusAcc.get().getAccountNumber())) {
+	 * vo.setType("Debit"); } else { vo.setType("Credit"); }
+	 * vo.setRemarks(each.getDescription()); listStatement.add(vo); } return
+	 * listStatement; }
+	 */
+	 
 }

@@ -9,6 +9,6 @@ public interface TransactionService {
 
 	String trasferCheck(TransactionVO transcationVo);
 
-	List<StatementVO> getAlltransaction(String username);
+	List<TransactionVO> getAlltransaction(String username);
 
 }

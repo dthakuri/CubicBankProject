@@ -72,7 +72,7 @@ public class CustomerUIController {
 			model.addAttribute("error", "please Login first");
 			return "customer/login";
 		} else {
-				List<StatementVO> stats = transactionService.getAlltransaction(loginVO2.getUsername());
+				List<TransactionVO> stats = transactionService.getAlltransaction(loginVO2.getUsername());
 				model.addAttribute("list", stats);
 				return "customer/transactionTable";
 		}

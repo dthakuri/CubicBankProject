@@ -16,8 +16,7 @@
 
 <body>
 <div th:replace="/customer/header :: header"></div>
- <h4>Hello Mr. <span th:utext="${session.userSessionVO.username}" th:unless="${session == null}" style="font-weight: bold; color: blue;"></span>
-</h4>
+
  <br/> 
     <div class="container" style="width:50%;">
         <h3>Add Beneficary</h3>
