@@ -15,22 +15,22 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.rab3tech.vo.RoleVO;
 
 
-@RunWith(SpringRunner.class)
+/*@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // for restTemplate
-@ActiveProfiles("test")
+@ActiveProfiles("test")*/
 public class RoleControllerIntegrationTest {
 	
-	@Autowired
-	private TestRestTemplate restTemplate;
+	/*
+	 * @Autowired private TestRestTemplate restTemplate;
+	 */
 
-	@Test
-	public void testGetRoleVO() {
-		//TestRestTemplate = this wrapper on Http Client
-		//calling rest
-		ResponseEntity<RoleVO> responseEntity = restTemplate.getForEntity("/v3/roles/100",	RoleVO.class);
-		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-		assertEquals("ADMIN_ROLE",responseEntity.getBody().getName());
-		assertEquals(100,responseEntity.getBody().getId());
-	}
+	/*
+	 * @Test public void testGetRoleVO() { //TestRestTemplate = this wrapper on Http
+	 * Client //calling rest ResponseEntity<RoleVO> responseEntity =
+	 * restTemplate.getForEntity("/v3/roles/100", RoleVO.class);
+	 * assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	 * assertEquals("ADMIN_ROLE",responseEntity.getBody().getName());
+	 * assertEquals(100,responseEntity.getBody().getId()); }
+	 */
 
 }
