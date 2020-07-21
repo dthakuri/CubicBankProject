@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
+import com.rab3tech.customer.service.AddressService;
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.customer.service.PayeeInfoService;
@@ -25,6 +26,7 @@ import com.rab3tech.customer.service.impl.CustomerEnquiryService;
 import com.rab3tech.customer.service.impl.SecurityQuestionService;
 //import com.rab3tech.dao.entity.SecurityQuestions;
 import com.rab3tech.email.service.EmailService;
+import com.rab3tech.vo.AddressVO;
 import com.rab3tech.vo.ApplicationResponseVO;
 import com.rab3tech.vo.ChangePasswordVO;
 //import com.rab3tech.vo.CustomerAccountInfoVO;
@@ -63,6 +65,84 @@ public class CustomerUIController {
 	
 	@Autowired
 	private TransactionService transactionService;
+	
+
+	@Autowired
+	private AddressService addressService;
+	
+	@GetMapping("/customer/checkRequest/")
+	public String getCheckRequest(HttpSession session, Model model) {
+		logger.debug("getCheckRequest");
+		LoginVO loginVO2 = (LoginVO) session.getAttribute("userSessionVO");
+		if (loginVO2 == null) {
+			model.addAttribute("error", "please Login first");
+			return "customer/login";
+		} else {
+			AddressVO addressVo = null;
+			try {
+				addressVo = addressService.findByLoginId(loginVO2.getUsername());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(addressVo.getId()==0) {
+				model.addAttribute("addressVO",addressVo);
+				return "customer/checkRequestEdit";
+			}
+			else {
+				model.addAttribute("addressVO", addressVo);
+				return "customer/checkRequestHome";
+			}
+		}
+		
+	}
+	
+	@GetMapping("customer/checkRequestEdit")
+	public String editCheckAddress(HttpSession session, Model model) {
+		logger.debug("editprofile");
+		LoginVO loginVO2 = (LoginVO) session.getAttribute("userSessionVO");
+		if (loginVO2 == null) {
+			model.addAttribute("error", "please Login first");
+			return "customer/login";
+		} else {
+			AddressVO addressVo = new AddressVO();
+			try {
+				addressVo = addressService.findByLoginId(loginVO2.getUsername());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			model.addAttribute("addressVO", addressVo);
+		return "customer/checkRequestEdit";
+		}
+	}
+	
+	
+	@PostMapping("/customer/check/update")
+	public String postAddress(@ModelAttribute AddressVO addressVO, Model model, HttpSession session) {
+		logger.debug("updateEditProfile");
+		
+		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
+		if (loginVO != null) {
+			addressVO.setLoginid(loginVO.getUsername());
+			String response=addressService.updateAddress(addressVO);
+			model.addAttribute("message", response);
+			AddressVO VO = new AddressVO();
+			try {
+				VO = addressService.findByLoginId(loginVO.getUsername());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			model.addAttribute("addressVO", VO);
+			return "customer/checkRequestHome";
+		} else {
+			model.addAttribute("error", "Please login");
+			return "customer/login";
+		}
+	}
+
 
 	@GetMapping("/customer/account/transactionList")
 	public String getTransaction(HttpSession session, Model model) {

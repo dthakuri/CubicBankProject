@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<title>Check Request Home</title>
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+
+</head>
+
+<body>
+<div th:replace="/customer/header :: header"></div>
+
+ <br/> 
+   
+    
+    <div class="container">
+    <br/>
+        <h3> Please Verify address to request check-book</h3>
+     <span th:utext="${message}" style="color: blue;font-size: 18px;font-weight: bold;"></span>
+         <hr />
+        <div th:object = "${addressVO}" class="box">
+  <p><b>Address 1:</b> <span th:utext="*{address1}"></span></p>
+   <p><b>Address 2:</b> <span th:utext="*{address2}"></span></p>
+    <p><b>City:</b> <span th:utext="*{city}"></span></p>
+  <p><b>State:</b> <span th:utext="*{state}"></span></p>
+     <p><b>Zip:</b> <span th:utext="*{zip}"></span></p>
+       <p><b>Country:</b> <span th:utext="*{country}"></span></p>
+  
+</div>
+<a href="/customer/checkRequestEdit"> 
+    <button type="button" class="btn btn-warning">Edit Address</button></a>
+  
+  <a href="#"> 
+    <button type="button" class="btn btn-primary">Submit</button></a>
+  </div>
+  
+</body>
+</html>
