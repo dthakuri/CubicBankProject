@@ -189,13 +189,29 @@ public class CustomerUIController {
 			return "customer/login";
 		} else {
 			CustomerVO customerVO = customerService.findProfileByEmail(loginVO2.getUsername());
-			model.addAttribute("customerVO", customerVO);// its right here
+			model.addAttribute("customerVO", customerVO);
 			List<SecurityQuestionsVO> qstAnswerVO = securityQuestionService.findAll();
 			model.addAttribute("questionVOs", qstAnswerVO);
 			logger.debug(customerVO.toString());
 
 		}
 		return "customer/customerProfileEdit";
+	}
+	
+	@PostMapping("/customer/account/update")
+	public String updateEditProfile(@ModelAttribute CustomerVO customerVO, Model model, HttpSession session) {
+		logger.debug("updateEditProfile");
+
+		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
+		if (loginVO != null) {
+			// Boolean check=false;
+			// check
+			customerService.updateProfile(customerVO);
+			return "redirect:/customer/account/myAccount";
+			//return "customer/customerProfileEdit";
+		} else {
+			return "customer/login";
+		}
 	}
 
 	@GetMapping("/customer/account/myAccount/customerAccountHome")
@@ -307,22 +323,7 @@ public class CustomerUIController {
 
 	}
 
-	@PostMapping("/customer/account/update")
-	public String updateEditProfile(@ModelAttribute CustomerVO customerVO, Model model, HttpSession session) {
-		logger.debug("updateEditProfile");
-
-		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
-		if (loginVO != null) {
-			// Boolean check=false;
-			// check
-			customerService.updateProfile(customerVO);
-			List<SecurityQuestionsVO> qstAnswerVO = securityQuestionService.findAll();
-			model.addAttribute("questionVOs", qstAnswerVO);
-			return "customer/customerProfileEdit";
-		} else {
-			return "customer/login";
-		}
-	}
+	
 
 	@PostMapping("/customer/account/savePayee")
 	public String savePayee(@ModelAttribute PayeeInfoVO payeeInfoVO, Model model, HttpSession session) throws Exception {

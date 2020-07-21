@@ -27,8 +27,8 @@
    
     
      <!-- Dropdown -->
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
+    <li class="nav-item dropdown " >
+      <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" >
        Account 
       </a>
       <div class="dropdown-menu">
@@ -38,25 +38,26 @@
     </li>
  	
  	<!-- Dropdown -->
-    <li class="nav-item dropdown">
+    <li class="nav-item dropdown " >
       <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown">
         Payee 
       </a>
       <div class="dropdown-menu">
-          <a class="dropdown-item" href="/customer/account/addPayee">Payee Table</a>
+          <a class="dropdown-item" href="/customer/account/addPayee">Payee Data</a>
+          
            <a class="dropdown-item" th:href="@{/customer/addPayee}">Add Payee</a>
 
       </div>
     </li>
 
     <!-- Dropdown -->
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle"  id="navbardrop" data-toggle="dropdown">
+    <li class="nav-item dropdown ">
+      <a class="nav-link dropdown-toggle"  id="navbardrop" data-toggle="dropdown" >
         Transfer 
       </a>
       <div class="dropdown-menu">
         <a class="dropdown-item" href="/customer/account/fundtransfer/">Fund Transfer</a>
-        <a class="dropdown-item" href="/customer/account/transactionList">Transaction Table</a>
+        <a class="dropdown-item" href="/customer/account/transactionList">Transactions</a>
       </div>
     </li>
     

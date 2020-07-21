@@ -25,18 +25,16 @@ public class CustomerAccountEnquiryController {
 	@Autowired
 	private CustomerEnquiryService customerEnquiryService;
 	
-	@PostMapping("/customers/enquiry")
-	public CustomerSavingVO saveEnquiry(@RequestBody CustomerSavingVO customerSavingVO) {
-		//write code for email validation;
-		CustomerSavingVO  response=null;
-	    boolean status=customerEnquiryService.emailNotExist(customerSavingVO.getEmail());
-		if(status) {
-		     response=customerEnquiryService.save(customerSavingVO);
-		}else {
-		  throw new BankServiceException("Sorry , this email is already in use "+customerSavingVO.getEmail());
-		}
-		return response;
-	}
+	/*
+	 * @PostMapping("/customers/enquiry") public CustomerSavingVO
+	 * saveEnquiry(@RequestBody CustomerSavingVO customerSavingVO) { //write code
+	 * for email validation; CustomerSavingVO response=null; boolean
+	 * status=customerEnquiryService.emailNotExist(customerSavingVO.getEmail());
+	 * if(status) { response=customerEnquiryService.save(customerSavingVO); }else {
+	 * throw new
+	 * BankServiceException("Sorry , this email is already in use "+customerSavingVO
+	 * .getEmail()); } return response; }
+	 */
 	
 	@GetMapping("/customers/enquiry")
 	public List<CustomerSavingVO> getAllEnquiry() {

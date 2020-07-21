@@ -92,8 +92,8 @@
                     <td>Question 1:</td>
                     <td>
                     
-                   <select class= "form-control" th:field="*{question1}" id="question1">
-  <option th:each="questionsVO : ${questionVOs}"  th:value="${questionsVO.qid}" th:text="${questionsVO.questions}"></option>
+                   <select class= "form-control" th:field="*{question1}"  >
+  <option th:each="questionsVO : ${questionVOs}"  th:value="${questionsVO.qid}"  th:text="${questionsVO.questions}" ></option>
                     </select> 
                      <td>Answer 1:</td>
                     <td>

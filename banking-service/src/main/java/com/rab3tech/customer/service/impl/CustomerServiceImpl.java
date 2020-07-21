@@ -212,6 +212,7 @@ public class CustomerServiceImpl implements  CustomerService{
 		questionAnswer.setSecurityQuestion2(customerVO.getQuestion2());
 		questionAnswer.setSecurityQuestionAnswer1(customerVO.getAnswer1());
 		questionAnswer.setSecurityQuestionAnswer2(customerVO.getAnswer2()); 
+		//CustomerQuestionAnswer questionAnswer2 = new CustomerQuestionAnswer
 		securityQuestionService.save(questionAnswer);
 
           }
