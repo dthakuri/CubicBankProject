@@ -82,23 +82,24 @@ public class CustomerAccountEnquiryControllerTest {
 	     verifyNoMoreInteractions(customerEnquiryService);
 	}
 	
-	@Test
-	public	void testSaveEnquiryWhenSuccess2() throws Exception {
-		  CustomerSavingVO customerSavingVO=new CustomerSavingVO(122,"nagendra","nagen@gmail.com","02390","NA","Saving","Appoved","C9393",null,"A435");
-		  when(customerEnquiryService.emailNotExist("nagen@gmail.com")).thenReturn(true);
-	 	  when(customerEnquiryService.save(customerSavingVO)).thenReturn(customerSavingVO);
-	 	 mockMvc.perform(MockMvcRequestBuilders.post("/v3/customers/enquiry")
-	 	        .contentType(MediaType.APPLICATION_JSON)
-	 	        .content(TestUtil.convertObjectToJsonBytes(customerSavingVO))
-	 			.accept(MediaType.APPLICATION_JSON))
-	 			.andExpect(jsonPath("$.name").exists())
-	 			.andExpect(jsonPath("$.email").exists())
-	 			.andExpect(jsonPath("$.name").value("nagendra"))
-	 			.andExpect(jsonPath("$.email").value("nagen@gmail.com"))
-	 			.andDo(print());
-		 verify(customerEnquiryService, times(1)).save(customerSavingVO);
-	     verifyNoMoreInteractions(customerEnquiryService);
-	}
+	/*
+	 * @Test public void testSaveEnquiryWhenSuccess2() throws Exception {
+	 * CustomerSavingVO customerSavingVO=new
+	 * CustomerSavingVO(122,"nagendra","nagen@gmail.com","02390","NA","Saving",
+	 * "Appoved","C9393",null,"A435");
+	 * when(customerEnquiryService.emailNotExist("nagen@gmail.com")).thenReturn(true
+	 * ); when(customerEnquiryService.save(customerSavingVO)).thenReturn(
+	 * customerSavingVO);
+	 * mockMvc.perform(MockMvcRequestBuilders.post("/v3/customers/enquiry")
+	 * .contentType(MediaType.APPLICATION_JSON)
+	 * .content(TestUtil.convertObjectToJsonBytes(customerSavingVO))
+	 * .accept(MediaType.APPLICATION_JSON)) .andExpect(jsonPath("$.name").exists())
+	 * .andExpect(jsonPath("$.email").exists())
+	 * .andExpect(jsonPath("$.name").value("nagendra"))
+	 * .andExpect(jsonPath("$.email").value("nagen@gmail.com")) .andDo(print());
+	 * verify(customerEnquiryService, times(1)).save(customerSavingVO);
+	 * verifyNoMoreInteractions(customerEnquiryService); }
+	 */
 	
 	@Test
 	public	void testGetEnquiryByIdWhenExist() throws Exception {
