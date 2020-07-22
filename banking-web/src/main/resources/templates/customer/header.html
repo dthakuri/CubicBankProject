@@ -21,11 +21,15 @@
 <div th:fragment="header">
 
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-center">
-<a class="navbar-brand" th:href="@{/customer/dashboard}">Dashboard</a>
+ <div class="container-fluid">
+ <div class="navbar-header">
+      <a class="navbar-brand"  th:href="@{/customer/dashboard}">Dashboard</a>
+      <a class="navbar-brand"  href="/customer/checkRequest/"> Check Request</a>
+      </div>
   <!-- Links -->
   <ul class="navbar-nav">
    
-    
+     
      <!-- Dropdown -->
     <li class="nav-item dropdown " >
       <a class="nav-link dropdown-toggle" id="navbardrop" data-toggle="dropdown" >
@@ -62,12 +66,14 @@
     </li>
     
   </ul>
-  
+    
+    
+   
   
    <ul class="nav navbar-nav navbar-right">
      <li class="nav-item"> <a href="/customer/login/"> Logout</a> </li>
     </ul>
- 
+ </div>
 </nav>
 
 </br>

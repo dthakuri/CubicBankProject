@@ -5,7 +5,7 @@ import com.rab3tech.vo.LoginVO;
 
 public interface AddressService  {
 
-	AddressVO findByLoginId(String string) throws Exception;
+	AddressVO findByLoginId(String string);
 
 	String updateAddress(AddressVO addressVO);
 

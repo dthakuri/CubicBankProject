@@ -78,13 +78,7 @@ public class CustomerUIController {
 			model.addAttribute("error", "please Login first");
 			return "customer/login";
 		} else {
-			AddressVO addressVo = null;
-			try {
-				addressVo = addressService.findByLoginId(loginVO2.getUsername());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			AddressVO addressVo = addressService.findByLoginId(loginVO2.getUsername());
 			if(addressVo.getId()==0) {
 				model.addAttribute("addressVO",addressVo);
 				return "customer/checkRequestEdit";
@@ -94,7 +88,6 @@ public class CustomerUIController {
 				return "customer/checkRequestHome";
 			}
 		}
-		
 	}
 	
 	@GetMapping("customer/checkRequestEdit")
@@ -105,13 +98,7 @@ public class CustomerUIController {
 			model.addAttribute("error", "please Login first");
 			return "customer/login";
 		} else {
-			AddressVO addressVo = new AddressVO();
-			try {
-				addressVo = addressService.findByLoginId(loginVO2.getUsername());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			AddressVO addressVo  = addressService.findByLoginId(loginVO2.getUsername());
 			model.addAttribute("addressVO", addressVo);
 		return "customer/checkRequestEdit";
 		}
@@ -127,14 +114,7 @@ public class CustomerUIController {
 			addressVO.setLoginid(loginVO.getUsername());
 			String response=addressService.updateAddress(addressVO);
 			model.addAttribute("message", response);
-			AddressVO VO = new AddressVO();
-			try {
-				VO = addressService.findByLoginId(loginVO.getUsername());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			AddressVO VO = addressService.findByLoginId(loginVO.getUsername());
 			model.addAttribute("addressVO", VO);
 			return "customer/checkRequestHome";
 		} else {

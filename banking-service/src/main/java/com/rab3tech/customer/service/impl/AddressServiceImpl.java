@@ -48,7 +48,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public AddressVO findByLoginId(String string) throws Exception {
+	public AddressVO findByLoginId(String string) {
 		Login login = loginRepository.findByLoginid(string).get();
 		Optional<Address> optional = addressRepository.findByLogin(login);
 		AddressVO addressVO = new AddressVO();
