@@ -21,6 +21,8 @@ public interface CustomerService {
 
 	String findAccountByEmail(String string);
 
+	List<CustomerAccountInfoVO> findAllAccountByUserid(String username);
+
 	
 
 }

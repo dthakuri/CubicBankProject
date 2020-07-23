@@ -3,6 +3,7 @@ package com.rab3tech.customer.service.impl;
 
 import java.beans.PropertyDescriptor;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -232,6 +233,21 @@ public class CustomerServiceImpl implements  CustomerService{
 			return "You don't have account to add Payee ";
 		}
 		return null;
+	}
+
+	@Override
+	public List<CustomerAccountInfoVO> findAllAccountByUserid(String username) {
+	Optional<Login> login= loginRepository.findById(username);
+	List<CustomerAccountInfoVO> listVo= new ArrayList<CustomerAccountInfoVO>();
+	if(login.isPresent()) {
+		List<CustomerAccountInfo> entityList= customerAccountInfoRepository.findAllByCustomerId(login.get());
+		for (CustomerAccountInfo each : entityList) {
+			CustomerAccountInfoVO vo = new CustomerAccountInfoVO();
+			BeanUtils.copyProperties(each, vo);
+			listVo.add(vo);
+		}
+	}
+		return listVo;
 	}
 }
 

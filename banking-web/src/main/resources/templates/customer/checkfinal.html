@@ -3,18 +3,14 @@
     xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8" />
-<title>Check Request Home</title>
+<title>Check Final Request </title>
 <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-<style type="text/css">
-a{
-color: black;
-}
-</style>
+
 
 </head>
 
@@ -23,32 +19,39 @@ color: black;
 
  <br/> 
    
-     
+    
     <div class="container">
+    
+     <form action="#" method="post"  th:action="@{/customer/checkRequest/email}">
+    <h1> Check Book Request Page</h1>
+       <br/>
+   Choose Account Number :  <select class="form-control" style="width:30%;" name="accountNumber">
+    <option th:each="acc : ${accountList}" th:value="${acc.id}" th:text="${acc.accountNumber}"></option>
+</select>
+
+     <br/> <hr /> <br/> 
+    <h3>Your check book will be delivered on below address:</h3>
     <br/>
-        <h3> Address Detail </h3>
+    <div style="margin-left:30%;">
+       <h1> <b>Address Detail</b></h1>
      
       
         <div th:object = "${addressVO}" class="box">
          <p><b><span th:utext="*{fname}"></span>   <span th:utext="*{lname}"></span></b></p>
          <p><b><span th:utext="*{address1}"></span>,   <span th:utext="*{address2}"></span></b></p>
          <p><b><span th:utext="*{city}"></span>,   <span th:utext="*{state}"></span></b></p>
-          <p><b><span th:utext="*{zip}"></span>   <span th:utext="*{country}"></span></b>   </p>                                        </b>
+          <p><b><span th:utext="*{zip}"></span>   <span th:utext="*{country}"></span></b></p>                                       
          
-       <div class="text-right">  <span th:utext="${message}" style="margin-right: 50px; color: blue;font-size: 25px;font-weight: bold;"></span> <a href="/customer/checkRequestEdit"> 
-         
-    <button type="button" class="btn btn-primary">Edit</button></a>
-  <a th:href="@{/customer/address/delete}"> 
-    <button  style="margin-left: 50px;" type="button" class="btn btn-warning">Delete</button></a> 
+        
+    <button type="submit" class="btn btn-primary btn-lg">Confirm</button>
+   
+  <a href="/customer/checkRequest/"> 
+    <button style="margin-left: 80px;" type="button" class="btn btn-secondary btn-lg">Cancel</button></a> 
     </div>
 </div>
+</form>
    <hr />
-   <br/>
-
-  <h3><a th:href="@{/customer/final/checkRequest}">Check Book Request</a> </h3>
-   <h3><a href="#">Loan Request</a> </h3>
-   <h3><a href="#">Change Mobile Number</a> </h3>
-   <h3><a  href="#">Raise Credit Card Request</a> </h3>
+   <br/><span th:utext="${message}" style="color: blue;font-size: 18px;font-weight: bold;"></span>
  
   </div>
 </body>

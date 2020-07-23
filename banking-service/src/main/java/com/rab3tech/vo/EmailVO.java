@@ -9,6 +9,7 @@ public class EmailVO {
 	private String registrationlink;
 	private String username;
 	private String password;
+	private AddressVO address;
 	
 	public EmailVO() {}
 
@@ -84,6 +85,14 @@ public class EmailVO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public AddressVO getAddress() {
+		return address;
+	}
+
+	public void setAddress(AddressVO address) {
+		this.address = address;
 	}
 	
 	

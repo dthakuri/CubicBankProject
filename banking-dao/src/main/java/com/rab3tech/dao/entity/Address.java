@@ -17,6 +17,8 @@ import javax.persistence.Table;
 public class Address {
 
 	private int id;
+	private String fname;
+	private String lname;
 	private Login loginid;
 	private String address1;
 	private String address2;
@@ -26,6 +28,7 @@ public class Address {
 	private String country;
 	private Timestamp doe;
 	private Timestamp dom;
+	private String pnumber;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -93,14 +96,32 @@ public class Address {
 	public void setDom(Timestamp dom) {
 		this.dom = dom;
 	}
-	@Override
-	public String toString() {
-		return "Address [id=" + id + ", login=" + loginid + ", address1=" + address1 + ", address2=" + address2
-				+ ", city=" + city + ", state=" + state + ", zip=" + zip + ", country=" + country + ", doe=" + doe
-				+ ", dom=" + dom + "]";
+
+	public String getFname() {
+		return fname;
+	}
+	public void setFname(String fname) {
+		this.fname = fname;
+	}
+	public String getLname() {
+		return lname;
+	}
+	public void setLname(String lname) {
+		this.lname = lname;
 	}
 	
-	
-	
+	public String getPnumber() {
+		return pnumber;
+	}
+	public void setPnumber(String pnumber) {
+		this.pnumber = pnumber;
+	}
+	@Override
+	public String toString() {
+		return "Address [id=" + id + ", fname=" + fname + ", lname=" + lname + ", loginid=" + loginid + ", address1="
+				+ address1 + ", address2=" + address2 + ", city=" + city + ", state=" + state + ", zip=" + zip
+				+ ", country=" + country + ", doe=" + doe + ", dom=" + dom + ", pnumber=" + pnumber + "]";
+	}
+
 	
 }

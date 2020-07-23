@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 public class AddressVO {
 		private int id;
+		private String fname;
+		private String lname;
 		private String loginid;
 		private String address1;
 		private String address2;
@@ -13,11 +15,25 @@ public class AddressVO {
 		private String country;
 		private Timestamp doe;
 		private Timestamp dom;
+		private String pnumber;
+		
 		public int getId() {
 			return id;
 		}
 		public void setId(int id) {
 			this.id = id;
+		}
+		public String getFname() {
+			return fname;
+		}
+		public void setFname(String fname) {
+			this.fname = fname;
+		}
+		public String getLname() {
+			return lname;
+		}
+		public void setLname(String lname) {
+			this.lname = lname;
 		}
 		public String getLoginid() {
 			return loginid;
@@ -73,12 +89,22 @@ public class AddressVO {
 		public void setDom(Timestamp dom) {
 			this.dom = dom;
 		}
+		
+		public String getPnumber() {
+			return pnumber;
+		}
+		public void setPnumber(String pnumber) {
+			this.pnumber = pnumber;
+		}
 		@Override
 		public String toString() {
-			return "AddressVO [id=" + id + ", loginid=" + loginid + ", address1=" + address1 + ", address2=" + address2
-					+ ", city=" + city + ", state=" + state + ", zip=" + zip + ", country=" + country + ", doe=" + doe
-					+ ", dom=" + dom + "]";
+			return "AddressVO [id=" + id + ", fname=" + fname + ", lname=" + lname + ", loginid=" + loginid
+					+ ", address1=" + address1 + ", address2=" + address2 + ", city=" + city + ", state=" + state
+					+ ", zip=" + zip + ", country=" + country + ", doe=" + doe + ", dom=" + dom + ", pnumber=" + pnumber
+					+ "]";
 		}
+		
+		
 		
 		
 		

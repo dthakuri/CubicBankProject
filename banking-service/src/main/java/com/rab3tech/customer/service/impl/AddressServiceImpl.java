@@ -35,9 +35,10 @@ public class AddressServiceImpl implements AddressService {
 		Login login = loginRepository.findByLoginid(addressVO.getLoginid()).get();
 		if(!oldAddress.isPresent()) {
 			Address address = new Address();
+			BeanUtils.copyProperties(addressVO, address, Utils.ignoreNullData(addressVO));
 			address.setLogin(login);
 			address.setDoe(new Timestamp(new Date().getTime()));
-			BeanUtils.copyProperties(addressVO, address, Utils.ignoreNullData(addressVO));
+			address.setDom(new Timestamp(new Date().getTime()));
 			addressRepository.save(address);
 		}else {
 		BeanUtils.copyProperties(addressVO, oldAddress.get(), Utils.ignoreNullData(addressVO));
@@ -56,6 +57,17 @@ public class AddressServiceImpl implements AddressService {
 			BeanUtils.copyProperties(optional.get(), addressVO);
 		}
 		return addressVO;
+	}
+
+	@Override
+	public String deleteByLoginId(String username) {
+		Login login = loginRepository.findByLoginid(username).get();
+		Optional<Address> optional = addressRepository.findByLogin(login);
+		if (optional.isPresent()) {
+			addressRepository.delete(optional.get());
+			return "Successfully deleted";
+		}
+		return "Sorry, You dont have address in the database, Please add your address to move further";
 	}
 
 	

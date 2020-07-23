@@ -9,6 +9,8 @@ public interface AddressService  {
 
 	String updateAddress(AddressVO addressVO);
 
+	String deleteByLoginId(String username);
+
 
 	
 

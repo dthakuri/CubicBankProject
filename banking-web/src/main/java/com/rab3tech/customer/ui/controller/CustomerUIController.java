@@ -29,6 +29,7 @@ import com.rab3tech.email.service.EmailService;
 import com.rab3tech.vo.AddressVO;
 import com.rab3tech.vo.ApplicationResponseVO;
 import com.rab3tech.vo.ChangePasswordVO;
+import com.rab3tech.vo.CustomerAccountInfoVO;
 //import com.rab3tech.vo.CustomerAccountInfoVO;
 import com.rab3tech.vo.CustomerSavingVO;
 import com.rab3tech.vo.CustomerSecurityQueAnsVO;
@@ -69,7 +70,47 @@ public class CustomerUIController {
 
 	@Autowired
 	private AddressService addressService;
+
 	
+	
+	@GetMapping("/customer/final/checkRequest")
+	public String finalCheckRequest(HttpSession session, Model model) {
+		logger.debug("deleteAddress");
+		LoginVO loginVO2 = (LoginVO) session.getAttribute("userSessionVO");
+		if (loginVO2 == null) {
+			model.addAttribute("error", "please Login first");
+			return "customer/login";
+		} else {
+			AddressVO addressVo = addressService.findByLoginId(loginVO2.getUsername());
+			if(addressVo.getId()==0) {
+				model.addAttribute("addressVO",addressVo);
+				model.addAttribute("message","Sorry, You dont have address in the database, Please add your address to move further" );
+				return "customer/checkRequestEdit";
+			}
+			else {
+				List<CustomerAccountInfoVO> accountList = customerService.findAllAccountByUserid(loginVO2.getUsername());
+				model.addAttribute("accountList", accountList);
+				model.addAttribute("addressVO", addressVo);
+				return "customer/checkfinal";
+			}
+		}
+	}
+	
+	@GetMapping("/customer/address/delete")
+	public String deleteAddress(HttpSession session, Model model) {
+		logger.debug("deleteAddress");
+		LoginVO loginVO2 = (LoginVO) session.getAttribute("userSessionVO");
+		if (loginVO2 == null) {
+			model.addAttribute("error", "Please Login first");
+			return "customer/login";
+		} else {
+			String response = addressService.deleteByLoginId(loginVO2.getUsername());
+			model.addAttribute("message",response);
+			return "customer/dashboard";
+			}
+			
+	}
+		
 	@GetMapping("/customer/checkRequest/")
 	public String getCheckRequest(HttpSession session, Model model) {
 		logger.debug("getCheckRequest");
@@ -79,7 +120,7 @@ public class CustomerUIController {
 			return "customer/login";
 		} else {
 			AddressVO addressVo = addressService.findByLoginId(loginVO2.getUsername());
-			if(addressVo.getId()==0) {
+			if( addressVo.getFname()==null || addressVo.getFname().equalsIgnoreCase("") ) {
 				model.addAttribute("addressVO",addressVo);
 				return "customer/checkRequestEdit";
 			}
@@ -111,12 +152,18 @@ public class CustomerUIController {
 		
 		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
 		if (loginVO != null) {
+			if(!addressVO.getFname().equalsIgnoreCase("")) {
 			addressVO.setLoginid(loginVO.getUsername());
 			String response=addressService.updateAddress(addressVO);
 			model.addAttribute("message", response);
 			AddressVO VO = addressService.findByLoginId(loginVO.getUsername());
 			model.addAttribute("addressVO", VO);
-			return "customer/checkRequestHome";
+			return "customer/checkRequestHome";}
+			else {
+				model.addAttribute("message","You must enter all data" );
+				model.addAttribute("addressVO",addressVO);
+				return "customer/checkRequestEdit";
+			}
 		} else {
 			model.addAttribute("error", "Please login");
 			return "customer/login";
