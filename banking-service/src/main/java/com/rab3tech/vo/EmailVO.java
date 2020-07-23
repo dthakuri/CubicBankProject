@@ -10,6 +10,7 @@ public class EmailVO {
 	private String username;
 	private String password;
 	private AddressVO address;
+	private String accountNum;
 	
 	public EmailVO() {}
 
@@ -93,6 +94,14 @@ public class EmailVO {
 
 	public void setAddress(AddressVO address) {
 		this.address = address;
+	}
+
+	public String getAccountNum() {
+		return accountNum;
+	}
+
+	public void setAccountNum(String accountNum) {
+		this.accountNum = accountNum;
 	}
 	
 	

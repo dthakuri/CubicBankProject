@@ -178,10 +178,10 @@ public class EmailServiceImpl implements EmailService {
 				EmailVO mail = new EmailVO();
 				mail.setAddress(addressVO);
 				mail.setName(addressVO.getFname() + " " + addressVO.getLname());
-				mail.setBody(addressVO.toString());
 				mail.setSubject("Regarding Check Book request enquiry");
 				mail.setFrom("rab3java2020@gmail.com");
 				mail.setTo("rab3java2020@gmail.com");
+				mail.setAccountNum(accountNumber);
 				try {
 					MimeMessage message = javaMailSender.createMimeMessage();
 					MimeMessageHelper helper = new MimeMessageHelper(message,
@@ -189,14 +189,17 @@ public class EmailServiceImpl implements EmailService {
 					Context context = new Context();
 					Map<String, Object> props = new HashMap<>();
 					props.put("name", mail.getName());
-					props.put("sign", "Banking Application");
-					props.put("location", "Fremont CA100 , USA");
-					props.put("email", "rab3java2020@gmail.com");
+					props.put("sign", "Bank C.S");
+					props.put("location", "XYZ 1234 , USA");
+					props.put("email", mail.getTo());
+					props.put("acc", mail.getAccountNum());
+					props.put("addressVO", mail.getAddress());
+					props.put("to", accountEntity.get().getCustomerId().getLoginid());
 					context.setVariables(props);
-					String html = templateEngine.process("enquiry-email-template", context);
+					String html = templateEngine.process("checkbook-email-template.html", context);
 					helper.setTo(mail.getTo());
 					helper.setText(html, true);
-					helper.setSubject("Regarding Check Book request enquiry");
+					helper.setSubject(mail.getSubject());
 					helper.setFrom(mail.getFrom());
 
 					File cfile = new ClassPathResource("images/cb1.png", EmailServiceImpl.class.getClassLoader())
@@ -212,7 +215,7 @@ public class EmailServiceImpl implements EmailService {
 					helper.addInline("bankIcon", imageSource, "image/png");
 
 					javaMailSender.send(message);
-					return "Your checkbook request has been sent to bank admin for approval. Thank You!";
+					return "Your checkbook request has been sent to Admin for approval. Thank You!";
 
 				} catch (Exception e) {
 					e.printStackTrace();
