@@ -12,11 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.rab3tech.customer.service.AddressService;
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.LoginService;
@@ -27,7 +25,6 @@ import com.rab3tech.customer.service.impl.SecurityQuestionService;
 //import com.rab3tech.dao.entity.SecurityQuestions;
 import com.rab3tech.email.service.EmailService;
 import com.rab3tech.vo.AddressVO;
-import com.rab3tech.vo.ApplicationResponseVO;
 import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.CustomerAccountInfoVO;
 //import com.rab3tech.vo.CustomerAccountInfoVO;
@@ -38,7 +35,6 @@ import com.rab3tech.vo.EmailVO;
 import com.rab3tech.vo.LoginVO;
 import com.rab3tech.vo.PayeeInfoVO;
 import com.rab3tech.vo.SecurityQuestionsVO;
-import com.rab3tech.vo.StatementVO;
 import com.rab3tech.vo.TransactionVO;
 
 @Controller
@@ -63,16 +59,33 @@ public class CustomerUIController {
 
 	@Autowired
 	private LoginService loginService;
-	
+
 	@Autowired
 	private TransactionService transactionService;
-	
 
 	@Autowired
 	private AddressService addressService;
 
-	
-	
+	@PostMapping("/customer/checkRequest/email")
+	public String emailCheckRequest(@RequestParam String accountNumber, HttpSession session, Model model) {
+		logger.debug("emailCheckRequest");
+		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
+		if (loginVO == null) {
+			model.addAttribute("error", "Please Login first");
+			return "customer/login";
+		} else {
+			String response = emailService.sendCheckEquiryEmail(accountNumber);
+			if(response==null) {
+				response="Some error occured while conforming check book request";
+			}
+			model.addAttribute("message", response);
+			AddressVO VO = addressService.findByLoginId(loginVO.getUsername());
+			model.addAttribute("addressVO", VO);
+			return "customer/checkRequestHome";
+
+		}
+	}
+
 	@GetMapping("/customer/final/checkRequest")
 	public String finalCheckRequest(HttpSession session, Model model) {
 		logger.debug("deleteAddress");
@@ -82,20 +95,21 @@ public class CustomerUIController {
 			return "customer/login";
 		} else {
 			AddressVO addressVo = addressService.findByLoginId(loginVO2.getUsername());
-			if(addressVo.getId()==0) {
-				model.addAttribute("addressVO",addressVo);
-				model.addAttribute("message","Sorry, You dont have address in the database, Please add your address to move further" );
+			if (addressVo.getId() == 0) {
+				model.addAttribute("addressVO", addressVo);
+				model.addAttribute("message",
+						"Sorry, You dont have address in the database, Please add your address to move further");
 				return "customer/checkRequestEdit";
-			}
-			else {
-				List<CustomerAccountInfoVO> accountList = customerService.findAllAccountByUserid(loginVO2.getUsername());
+			} else {
+				List<CustomerAccountInfoVO> accountList = customerService
+						.findAllAccountByUserid(loginVO2.getUsername());
 				model.addAttribute("accountList", accountList);
 				model.addAttribute("addressVO", addressVo);
 				return "customer/checkfinal";
 			}
 		}
 	}
-	
+
 	@GetMapping("/customer/address/delete")
 	public String deleteAddress(HttpSession session, Model model) {
 		logger.debug("deleteAddress");
@@ -105,12 +119,12 @@ public class CustomerUIController {
 			return "customer/login";
 		} else {
 			String response = addressService.deleteByLoginId(loginVO2.getUsername());
-			model.addAttribute("message",response);
+			model.addAttribute("message", response);
 			return "customer/dashboard";
-			}
-			
+		}
+
 	}
-		
+
 	@GetMapping("/customer/checkRequest/")
 	public String getCheckRequest(HttpSession session, Model model) {
 		logger.debug("getCheckRequest");
@@ -120,17 +134,16 @@ public class CustomerUIController {
 			return "customer/login";
 		} else {
 			AddressVO addressVo = addressService.findByLoginId(loginVO2.getUsername());
-			if( addressVo.getFname()==null || addressVo.getFname().equalsIgnoreCase("") ) {
-				model.addAttribute("addressVO",addressVo);
+			if (addressVo.getFname() == null || addressVo.getFname().equalsIgnoreCase("")) {
+				model.addAttribute("addressVO", addressVo);
 				return "customer/checkRequestEdit";
-			}
-			else {
+			} else {
 				model.addAttribute("addressVO", addressVo);
 				return "customer/checkRequestHome";
 			}
 		}
 	}
-	
+
 	@GetMapping("customer/checkRequestEdit")
 	public String editCheckAddress(HttpSession session, Model model) {
 		logger.debug("editprofile");
@@ -139,29 +152,28 @@ public class CustomerUIController {
 			model.addAttribute("error", "please Login first");
 			return "customer/login";
 		} else {
-			AddressVO addressVo  = addressService.findByLoginId(loginVO2.getUsername());
+			AddressVO addressVo = addressService.findByLoginId(loginVO2.getUsername());
 			model.addAttribute("addressVO", addressVo);
-		return "customer/checkRequestEdit";
+			return "customer/checkRequestEdit";
 		}
 	}
-	
-	
+
 	@PostMapping("/customer/check/update")
 	public String postAddress(@ModelAttribute AddressVO addressVO, Model model, HttpSession session) {
 		logger.debug("updateEditProfile");
-		
+
 		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
 		if (loginVO != null) {
-			if(!addressVO.getFname().equalsIgnoreCase("")) {
-			addressVO.setLoginid(loginVO.getUsername());
-			String response=addressService.updateAddress(addressVO);
-			model.addAttribute("message", response);
-			AddressVO VO = addressService.findByLoginId(loginVO.getUsername());
-			model.addAttribute("addressVO", VO);
-			return "customer/checkRequestHome";}
-			else {
-				model.addAttribute("message","You must enter all data" );
-				model.addAttribute("addressVO",addressVO);
+			if (!addressVO.getFname().equalsIgnoreCase("")) {
+				addressVO.setLoginid(loginVO.getUsername());
+				String response = addressService.updateAddress(addressVO);
+				model.addAttribute("message", response);
+				AddressVO VO = addressService.findByLoginId(loginVO.getUsername());
+				model.addAttribute("addressVO", VO);
+				return "customer/checkRequestHome";
+			} else {
+				model.addAttribute("message", "You must enter all data");
+				model.addAttribute("addressVO", addressVO);
 				return "customer/checkRequestEdit";
 			}
 		} else {
@@ -169,7 +181,6 @@ public class CustomerUIController {
 			return "customer/login";
 		}
 	}
-
 
 	@GetMapping("/customer/account/transactionList")
 	public String getTransaction(HttpSession session, Model model) {
@@ -179,14 +190,14 @@ public class CustomerUIController {
 			model.addAttribute("error", "please Login first");
 			return "customer/login";
 		} else {
-				List<TransactionVO> stats = transactionService.getAlltransaction(loginVO2.getUsername());
-				model.addAttribute("list", stats);
-				return "customer/transactionTable";
+			List<TransactionVO> stats = transactionService.getAlltransaction(loginVO2.getUsername());
+			model.addAttribute("list", stats);
+			return "customer/transactionTable";
 		}
 	}
-	
+
 	@PostMapping("/customer/account/fundtransfer")
-	public String verifyTransfer(@ModelAttribute TransactionVO transcationVo, HttpSession session, Model model){
+	public String verifyTransfer(@ModelAttribute TransactionVO transcationVo, HttpSession session, Model model) {
 		logger.debug("verifyTransfer");
 		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
 		if (loginVO == null) {
@@ -196,16 +207,16 @@ public class CustomerUIController {
 			transcationVo.setCustomerId(loginVO.getUsername());
 			String response = transactionService.trasferCheck(transcationVo);
 			List<PayeeInfoVO> payees = payeeInfoService.getAllPayee(loginVO.getUsername());
-			model.addAttribute("message", response);	
+			model.addAttribute("message", response);
 			model.addAttribute("payeeInfoList", payees);
 			return "customer/fundTransfer";
-			
+
 		}
-		
-	} 
-	
+
+	}
+
 	@GetMapping("/customer/account/fundtransfer")
-	public String fundTransfer(HttpSession session, Model model){
+	public String fundTransfer(HttpSession session, Model model) {
 		logger.debug("fundTransfer");
 		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
 		if (loginVO == null) {
@@ -215,11 +226,11 @@ public class CustomerUIController {
 			List<PayeeInfoVO> payees = payeeInfoService.getAllPayee(loginVO.getUsername());
 			model.addAttribute("payeeInfoList", payees);
 			return "customer/fundTransfer";
-			
+
 		}
-		
+
 	}
-	
+
 	@GetMapping(value = { "/customer/account/enquiry", "/", "/mocha", "/welcome" })
 	public String showCustomerEnquiryPage(Model model) {
 		CustomerSavingVO customerSavingVO = new CustomerSavingVO();
@@ -304,7 +315,7 @@ public class CustomerUIController {
 		}
 		return "customer/customerProfileEdit";
 	}
-	
+
 	@PostMapping("/customer/account/update")
 	public String updateEditProfile(@ModelAttribute CustomerVO customerVO, Model model, HttpSession session) {
 		logger.debug("updateEditProfile");
@@ -315,7 +326,7 @@ public class CustomerUIController {
 			// check
 			customerService.updateProfile(customerVO);
 			return "redirect:/customer/account/myAccount";
-			//return "customer/customerProfileEdit";
+			// return "customer/customerProfileEdit";
 		} else {
 			return "customer/login";
 		}
@@ -430,20 +441,19 @@ public class CustomerUIController {
 
 	}
 
-	
-
 	@PostMapping("/customer/account/savePayee")
-	public String savePayee(@ModelAttribute PayeeInfoVO payeeInfoVO, Model model, HttpSession session) throws Exception {
+	public String savePayee(@ModelAttribute PayeeInfoVO payeeInfoVO, Model model, HttpSession session)
+			throws Exception {
 		logger.debug("savePayee");
 		LoginVO loginVO = (LoginVO) session.getAttribute("userSessionVO");
 		if (loginVO != null) {
 			payeeInfoVO.setCustomerId(loginVO.getUsername());
 			String response = payeeInfoService.savePayee(payeeInfoVO);
-				List<PayeeInfoVO> payees = payeeInfoService.getAllPayee(loginVO.getUsername());
-				model.addAttribute("payees", payees);
-				model.addAttribute("message",response);
-				return "customer/addPayee";
-			} else {
+			List<PayeeInfoVO> payees = payeeInfoService.getAllPayee(loginVO.getUsername());
+			model.addAttribute("payees", payees);
+			model.addAttribute("message", response);
+			return "customer/addPayee";
+		} else {
 			model.addAttribute("message", " Your session has ended, please login again");
 			return "customer/login";
 		}

@@ -25,8 +25,9 @@
      <form action="#" method="post"  th:action="@{/customer/checkRequest/email}">
     <h1> Check Book Request Page</h1>
        <br/>
-   Choose Account Number :  <select class="form-control" style="width:30%;" name="accountNumber">
-    <option th:each="acc : ${accountList}" th:value="${acc.id}" th:text="${acc.accountNumber}"></option>
+   Choose Account Number :  
+   <select class="form-control" style="width:30%;" th:name="accountNumber">
+    <option th:each="acc : ${accountList}" th:value="${acc.accountNumber}" th:text="${acc.accountNumber}" th:name="accountNumber"></option>
 </select>
 
      <br/> <hr /> <br/> 

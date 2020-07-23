@@ -25,7 +25,7 @@ color: black;
    
      
     <div class="container">
-    <br/>
+    <br/>  
         <h3> Address Detail </h3>
      
       
@@ -33,10 +33,12 @@ color: black;
          <p><b><span th:utext="*{fname}"></span>   <span th:utext="*{lname}"></span></b></p>
          <p><b><span th:utext="*{address1}"></span>,   <span th:utext="*{address2}"></span></b></p>
          <p><b><span th:utext="*{city}"></span>,   <span th:utext="*{state}"></span></b></p>
-          <p><b><span th:utext="*{zip}"></span>   <span th:utext="*{country}"></span></b>   </p>                                        </b>
-         
-       <div class="text-right">  <span th:utext="${message}" style="margin-right: 50px; color: blue;font-size: 25px;font-weight: bold;"></span> <a href="/customer/checkRequestEdit"> 
-         
+          <p><b><span th:utext="*{zip}"></span>   <span th:utext="*{country}"></span></b></p>                                     
+       <div class="text-right">  
+    <span  th:utext="${message}" style="text-align:right; color: blue;font-size: 25px;font-weight: bold;"></span>
+ 
+ <br/>
+ <a href="/customer/checkRequestEdit"> 
     <button type="button" class="btn btn-primary">Edit</button></a>
   <a th:href="@{/customer/address/delete}"> 
     <button  style="margin-left: 50px;" type="button" class="btn btn-warning">Delete</button></a> 
